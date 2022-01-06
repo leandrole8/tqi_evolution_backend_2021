@@ -1,8 +1,10 @@
 package com.leandroreis.desafiotqievolution.controller;
 
 import com.leandroreis.desafiotqievolution.model.Cliente;
-import com.leandroreis.desafiotqievolution.repository.ClienteRepository;
+import com.leandroreis.desafiotqievolution.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,16 +14,39 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @PostMapping("/cadastrar")
-    public Cliente cadastro(@RequestBody Cliente cliente){
-        return clienteRepository.save(cliente);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Cliente> newCliente(@RequestBody Cliente cliente){
+        Cliente cliente1 = clienteService.newCliente(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
 
     @GetMapping
     public List<Cliente> pesquisaTodos(){
-        return clienteRepository.findAll();
+        return clienteService.listAll();
     }
-    //fazer o clone do projeto antes de modificar DTO e demais classes!!
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> clienteById(@PathVariable Long id){
+        return clienteService.listById(id)
+                .map(record -> ResponseEntity.ok().body(record))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable Long id, Cliente cliente){
+        return clienteService.updateCliente(id, cliente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCliente(@PathVariable Long id){
+        return clienteService.listById(id)
+                .map(record -> {
+                    clienteService.delete(id);
+                    return ResponseEntity.ok().body(id);
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
 }
