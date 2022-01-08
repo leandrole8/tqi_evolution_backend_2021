@@ -42,6 +42,6 @@ public class Cliente {
     private String senha;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Emprestimo> emprestimo;
 }

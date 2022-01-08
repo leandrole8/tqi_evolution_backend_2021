@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.sql.Date;
 
 @Entity
@@ -24,6 +25,7 @@ public class Emprestimo {
     private Date dataPrimeiraParcela;
 
     @Column(nullable = false)
+    @Max(60)
     private Integer qtdadeParcelas;
 
     @JsonBackReference

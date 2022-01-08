@@ -20,30 +20,17 @@ public class ClienteService {
     }
 
     public Optional<Cliente> listById(Long id){
+
         return clienteRepository.findById(id);
     }
 
     public Cliente newCliente(Cliente cliente){
+
         return clienteRepository.save(cliente);
     }
 
-    public ResponseEntity<Cliente> updateCliente(Long id, Cliente cliente){
-        return clienteRepository.findById(id)
-                .map(record -> {
-                    record.setNome(cliente.getNome());
-                    record.setEmail(cliente.getEmail());
-                    record.setCpf(cliente.getCpf());
-                    record.setRg(cliente.getRg());
-                    record.setEndereco(cliente.getEndereco());
-                    record.setRenda(cliente.getRenda());
-                    record.setSenha(cliente.getSenha());
-                    record.setEmprestimo(cliente.getEmprestimo());
-                    Cliente updated = clienteRepository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
-    }
-
     public void delete(Long id){
+
         clienteRepository.deleteById(id);
     }
 

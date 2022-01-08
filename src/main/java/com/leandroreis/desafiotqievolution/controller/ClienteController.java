@@ -17,7 +17,6 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("/cadastrar")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Cliente> newCliente(@RequestBody Cliente cliente){
         Cliente cliente1 = clienteService.newCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
@@ -25,6 +24,7 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> pesquisaTodos(){
+
         return clienteService.listAll();
     }
 
@@ -33,11 +33,6 @@ public class ClienteController {
         return clienteService.listById(id)
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable Long id, Cliente cliente){
-        return clienteService.updateCliente(id, cliente);
     }
 
     @DeleteMapping("/{id}")
