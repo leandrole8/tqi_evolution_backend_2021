@@ -40,7 +40,7 @@ public class ClienteController {
         return clienteService.listById(id)
                 .map(record -> {
                     clienteService.delete(id);
-                    return ResponseEntity.ok().body(id);
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id);
                 }).orElse(ResponseEntity.notFound().build());
     }
 
